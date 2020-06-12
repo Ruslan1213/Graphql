@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GraphQlLibary.DAL\GraphQlLibary.DAL.csproj" />
+    <ProjectReference Include="..\GraphQlLibary.Domain\GraphQlLibary.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
