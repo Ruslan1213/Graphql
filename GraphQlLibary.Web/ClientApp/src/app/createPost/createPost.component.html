@@ -1,0 +1,13 @@
+<form [formGroup]="profileForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label class="control-label">Photo</label>
+    <input type="file" formControlName="file" class="form-control" />
+  </div>
+  <!--<div class="form-group">
+    <label class="control-label">First Name:</label>
+    <input type="text" formControlName="description" class="form-control">    
+  </div>-->
+  <div class="form-group">
+    <input type="submit" value="Create" class="btn btn-primary" />
+  </div>
+</form>

@@ -1,0 +1,33 @@
+<p>Roles</p>
+
+<div *ngIf="loading">
+  Loading...
+</div>
+<div *ngIf="error">
+  Error Occurred :(
+</div>
+<a>Create</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Role name</th>
+      <th scope="col">Role id</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let role of roles">
+      <th scope="row">{{ role.name }}</th>
+      <td>{{ role.id }} </td>
+      <td>
+        <a href="http://localhost:4200/">Delete</a>
+        <br/>
+        <a href="http://localhost:4200/">Update</a>
+        <br/>
+        <a href="http://localhost:4200/">Details</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button class="btn btn-primary" (click)="onClick()">{{count}}</button>

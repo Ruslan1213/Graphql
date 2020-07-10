@@ -16,7 +16,7 @@ namespace GraphQlLibary.Domain.Interfaces.Repository
 
         IEnumerable<T> GetAll();
 
-        T Get(string id);
+        T Get(int id);
 
         bool IsExist(Expression<Func<T, bool>> filter);
     }

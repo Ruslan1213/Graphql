@@ -9,16 +9,18 @@ namespace GraphQlLibary.DAL.Context
     {
         public LibaryContext(DbContextOptions<LibaryContext> options) : base(options)
         {
-            // Database.EnsureCreated();
+             Database.EnsureCreated();
         }
 
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Role> Books { get; set; }
 
-        public DbSet<Author> Authors { get; set; }
+        public DbSet<User> Users { get; set; }
 
-        public DbSet<Reader> Readers { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
-        public DbSet<BookReader> BookReaders { get; set; }
+        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<UserRole> UserRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,10 +29,7 @@ namespace GraphQlLibary.DAL.Context
             base.OnModelCreating(modelBuilder);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseLazyLoadingProxies();
-        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
+            => optionsBuilder.UseLazyLoadingProxies();
     }
 }

@@ -1,29 +1,42 @@
 ﻿using GraphQlLibary.DAL.Context;
 using GraphQlLibary.Domain.Interfaces.Repository;
 using GraphQlLibary.Domain.Interfaces.UnitOfWork;
+using GraphQlLibary.Domain.Models;
 
 namespace GraphQlLibary.DAL.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public IAuthorRepository AuthorRepository { get; }
+        public IRoleRepository AuthorRepository { get; }
 
-        public IBookRepository BookRepository { get; }
+        public IPostRepository BookRepository { get; }
 
-        public IReaderRepository ReaderRepository { get; }
+        public IUserRepository ReaderRepository { get; }
+
+        public IPostRepository PostRepository { get; }
+
+        public IRepository<Photo> PhotoRepository { get; }
+
+        public IRepository<Comment> CommentRepository { get; }
 
         private readonly LibaryContext _libaryContext;
 
         public UnitOfWork(
-            IAuthorRepository authorRepository,
-            IBookRepository bookRepository,
-            IReaderRepository readerRepository,
+            IRepository<Photo> photoRepository,
+            IRepository<Comment> commentRepository,
+            IRoleRepository authorRepository,
+            IPostRepository bookRepository,
+            IUserRepository readerRepository,
+            IPostRepository postRepository,
             LibaryContext libaryContext)
         {
             _libaryContext = libaryContext;
             AuthorRepository = authorRepository;
             BookRepository = bookRepository;
+            PostRepository = postRepository;
             ReaderRepository = readerRepository;
+            PhotoRepository = photoRepository;
+            CommentRepository = commentRepository;
         }
 
         public void Commit()

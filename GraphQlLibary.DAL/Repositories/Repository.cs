@@ -27,7 +27,7 @@ namespace GraphQlLibary.DAL.Repositories
             return _dbSet.Where(filter);
         }
 
-        public T Get(string id)
+        public T Get(int id)
         {
             return _dbSet.Find(id);
         }

@@ -20,17 +20,24 @@ namespace GraphQlLibary.Infrastructure.DI
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<AuthorRepository>().As<IAuthorRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<BookRepository>().As<IBookRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<ReaderRepository>().As<IReaderRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<RoleRepository>().As<IRoleRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<PostRepository>().As<IPostRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
 
-            builder.RegisterType<Repository<Author>>().As<IRepository<Author>>().InstancePerLifetimeScope();
-            builder.RegisterType<Repository<Book>>().As<IRepository<Book>>().InstancePerLifetimeScope();
-            builder.RegisterType<Repository<Reader>>().As<IRepository<Reader>>().InstancePerLifetimeScope();
+            builder.RegisterType<Repository<Comment>>().As<IRepository<Comment>>().InstancePerLifetimeScope();
+            builder.RegisterType<Repository<Photo>>().As<IRepository<Photo>>().InstancePerLifetimeScope();
+            builder.RegisterType<Repository<Post>>().As<IRepository<Post>>().InstancePerLifetimeScope();
 
-            builder.RegisterType<AuthorService>().As<IAuthorService>().InstancePerLifetimeScope();
-            builder.RegisterType<BookService>().As<IBookService>().InstancePerLifetimeScope();
-            builder.RegisterType<ReaderService>().As<IReaderService>().InstancePerLifetimeScope();
+            builder.RegisterType<Repository<Role>>().As<IRepository<Role>>().InstancePerLifetimeScope();
+            builder.RegisterType<Repository<Role>>().As<IRepository<Role>>().InstancePerLifetimeScope();
+            builder.RegisterType<Repository<User>>().As<IRepository<User>>().InstancePerLifetimeScope();
+
+            builder.RegisterType<RoleService>().As<IRoleService>().InstancePerLifetimeScope();
+            builder.RegisterType<PostSrvice>().As<IPostService>().InstancePerLifetimeScope();
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<CommentService>().As<ICommentService>().InstancePerLifetimeScope();
+            builder.RegisterType<PhotoService>().As<IPhotoService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<LibaryContext>().AsSelf().InstancePerLifetimeScope();
@@ -44,11 +51,18 @@ namespace GraphQlLibary.Infrastructure.DI
             builder.RegisterType<LibaryQuery>().AsSelf().SingleInstance();
             builder.RegisterType<LibaryMutation>().AsSelf().SingleInstance();
 
-            builder.RegisterType<AuthorType>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<BookType>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<BookReaderType>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<ReaderType>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<AuthorInputOrUpdateType>().AsSelf().SingleInstance();
+            builder.RegisterType<CommentType>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<RoleType>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<UserRoleType>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<UserType>().AsSelf().InstancePerLifetimeScope();
+
+            builder.RegisterType<RoleInputOrUpdateType>().AsSelf().SingleInstance();
+            builder.RegisterType<CommentInputOrUpdateType>().AsSelf().SingleInstance();
+            builder.RegisterType<PostInputOrUpdateType>().AsSelf().SingleInstance();
+            builder.RegisterType<UserInputOrUpdateType>().AsSelf().SingleInstance();
+
+            builder.RegisterType<PostType>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<PhotoType>().AsSelf().InstancePerLifetimeScope();
         }
     }
 }

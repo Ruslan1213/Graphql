@@ -10,7 +10,7 @@ namespace GraphQlLibary.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IReaderService readerService, IBookService bookService, IAuthorService authorService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, IPostService bookService, IRoleService authorService)
         {
             _logger = logger;
         }

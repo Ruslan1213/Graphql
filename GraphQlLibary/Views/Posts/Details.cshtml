@@ -1,0 +1,88 @@
+﻿@model GraphQlLibary.Domain.Models.Post
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Photo
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.PhotoUri" alt="something went wrong" />
+        </dd>
+        <dt class="col-sm-2">
+            Date Of Post
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfPost)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10" >
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dd id="heart" class="col-sm-10">
+            <span class="heart"></span>
+            @Model.Likes
+        </dd>
+    </dl>
+    <form class="invisible" asp-action="LikeIt" id="form">
+        <input name="id" value="@Model.Id" hidden="hidden" id="postId"/>
+        <button type="submit" class="btn btn-primary">Like</button>
+    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+<script>
+    document.getElementById('heart').addEventListener('click', function (e) {
+        let id = document.getElementById('postId').value;
+        fetch('/Posts/LikeIt?id=' + id, { method: 'POST'})
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                document.getElementById('heart').innerHTML = '';
+                document.getElementById('heart').innerHTML = '<span class="heart"></span>' + data;
+                console.log(data);
+            });
+        //document.location.reload(true);
+    });
+</script>
+
+<style>
+    .heart {
+        background-color: red;
+        display: inline-block;
+        height: 30px;
+        margin: 0 10px;
+        position: relative;
+        top: 0;
+        transform: rotate(-45deg);
+        width: 30px;
+    }
+
+        .heart:before,
+        .heart:after {
+            content: "";
+            background-color: red;
+            border-radius: 50%;
+            height: 30px;
+            position: absolute;
+            width: 30px;
+        }
+
+        .heart:before {
+            top: -15px;
+            left: 0;
+        }
+
+        .heart:after {
+            left: 15px;
+            top: 0;
+        }
+</style>

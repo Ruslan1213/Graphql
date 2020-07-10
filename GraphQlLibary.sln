@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQlLibary.DAL", "GraphQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQlLibary.BLL", "GraphQlLibary.BLL\GraphQlLibary.BLL.csproj", "{EE446DE4-CEA6-41FC-BEA5-1EE42949E980}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQlLibary", "GraphQlLibary\GraphQlLibary.csproj", "{1EB8D8D5-8464-47DC-8D17-7A4FB5FC89BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQlLibary.Web", "GraphQlLibary.Web\GraphQlLibary.Web.csproj", "{919313B2-28C3-443E-BB8A-D1362DC4DF6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{EE446DE4-CEA6-41FC-BEA5-1EE42949E980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE446DE4-CEA6-41FC-BEA5-1EE42949E980}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE446DE4-CEA6-41FC-BEA5-1EE42949E980}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1EB8D8D5-8464-47DC-8D17-7A4FB5FC89BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1EB8D8D5-8464-47DC-8D17-7A4FB5FC89BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EB8D8D5-8464-47DC-8D17-7A4FB5FC89BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1EB8D8D5-8464-47DC-8D17-7A4FB5FC89BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{919313B2-28C3-443E-BB8A-D1362DC4DF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919313B2-28C3-443E-BB8A-D1362DC4DF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919313B2-28C3-443E-BB8A-D1362DC4DF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{919313B2-28C3-443E-BB8A-D1362DC4DF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
