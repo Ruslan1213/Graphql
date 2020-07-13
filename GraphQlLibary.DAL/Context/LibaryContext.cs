@@ -22,6 +22,8 @@ namespace GraphQlLibary.DAL.Context
 
         public DbSet<UserRole> UserRole { get; set; }
 
+        public DbSet<Like> Likes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DbConfigurator.ConfigureDb(modelBuilder);

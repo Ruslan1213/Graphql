@@ -9,43 +9,33 @@ import gql from "graphql-tag";
 })
 export class RoleComponent implements OnInit {
   roles: any[];
-  loading = true;
   error: any;
   count: number;
+
   constructor(private apollo: Apollo) { this.count = 1; }
 
   ngOnInit() {
+    let str = sessionStorage.getItem('token');
+    if (str == null) { str = ''; }
+
     this.apollo
       .query<any>({
-        query: gql`
-          {
-            roleItems {
-              id,
-              name
-            }
+        query: gql`{ roleItems { id, name } }`,
+        context: {
+          headers: {
+            token: str
           }
-        `
+        }
       })
       .subscribe(
-        ({ data, loading }) => {
+        ({ data }) => {
+          console.log(sessionStorage.getItem('token'))
           this.roles = data && data.roleItems;
-          this.loading = loading;
         },
         error => {
-          this.loading = false;
           this.error = error;
+          console.log(error);
         }
       );
-  }
-
-  getAuthorNames(authors) {
-    if (authors.length > 1)
-      return authors.reduce((acc, cur) => acc.name + ", " + cur.name);
-    else return authors[0].name;
-  }
-
-  onClick()
-  {
-    this.count = this.count + 1;
   }
 }

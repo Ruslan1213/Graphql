@@ -1,10 +1,8 @@
 import { FormGroup, FormControl } from '@angular/forms';
-import { Component, OnInit } from "@angular/core";
-import { Apollo } from "apollo-angular";
-import gql from "graphql-tag";
+import { Component} from "@angular/core";
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-const FileUpload = gql`mutation ($file: Upload!) { singleUpload(file: $file)}`;
-//"{ 
 @Component({
   selector: 'app-home',
   templateUrl: './createPost.component.html'
@@ -14,29 +12,31 @@ export class CreatePostComponent {
 
   post: any;
   query: string;
-
+  http: HttpClient;
+  fileToUpload: File;
   profileForm = new FormGroup({
-    file: new FormControl(''),
-    //description: new FormControl(null, [Validators.required]),
+    description: new FormControl(''),
   });
 
-  constructor(private apollo: Apollo) { }
+  constructor(http: HttpClient, private router: Router) {
+    this.http = http;
+  }
 
   onSubmit() {
- 
-    console.log(this.profileForm.controls['file'].value);
+    let formData = new FormData();
+    formData.append('file', this.fileToUpload, this.fileToUpload.name);
+    formData.append('description', this.profileForm.controls['description'].value);
+    const myHeaders = new HttpHeaders().set('token', sessionStorage.getItem('token'));
 
-    this.apollo.mutate({
-      mutation: FileUpload,
-      variables: {
-        file: this.profileForm.controls['file'].value,
-      }
-    }).subscribe(
-      ({ data }) => {
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    this.http.post("https://localhost:44338/api/post/CreatePost", formData, { headers: myHeaders }).subscribe((val) => {
+      this.router.navigate(['/post']);
+      console.log(val);
+    });
+    
+    return null;
+  }
+
+  postMethod(files: FileList) {
+    this.fileToUpload = files.item(0);
   }
 }

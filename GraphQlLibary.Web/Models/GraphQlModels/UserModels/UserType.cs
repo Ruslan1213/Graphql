@@ -1,5 +1,6 @@
 ﻿using GraphQL.Types;
 using GraphQlLibary.Domain.Models;
+using GraphQlLibary.Web.Models.GraphQlModels.Likes;
 using GraphQlLibary.Web.Models.GraphQlModels.PostModels;
 
 namespace GraphQlLibary.Web.Models.GraphQlModels.UserModels
@@ -14,6 +15,7 @@ namespace GraphQlLibary.Web.Models.GraphQlModels.UserModels
             Field(x => x.Email);
             Field<ListGraphType<PostType>>("posts", "Which comments they appear in.");
             Field<ListGraphType<UserRoleType>>("userRole", "Which userRoles they appear in.");
+            Field<ListGraphType<LikeType>>("likes", "Which likes they appear in.");
         }
     }
 }

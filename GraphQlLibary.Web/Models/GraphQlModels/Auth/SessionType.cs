@@ -3,11 +3,10 @@ using GraphQlLibary.Web.Auth;
 
 namespace GraphQlLibary.Web.Models.GraphQlModels.Auth
 {
-    public class SessionType : ObjectGraphType<Session>
+    public class SessionType : ObjectGraphType<TokenService>
     {
         public SessionType()
         {
-            Field(t => t.IsLoggedIn);
         }
     }
 }

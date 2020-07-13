@@ -13,8 +13,6 @@ namespace GraphQlLibary.Domain.Models
 
         public string PhotoUri { get; set; }
 
-        public long Likes { get; set; }
-
         public int UserId { get; set; }
 
         public virtual User User { get; set; }
@@ -22,5 +20,7 @@ namespace GraphQlLibary.Domain.Models
         public virtual ICollection<Comment> Comments { get; set; }
 
         public virtual ICollection<Photo> Photos { get; set; }
+
+        public virtual ICollection<Like> Likes { get; set; }
     }
 }

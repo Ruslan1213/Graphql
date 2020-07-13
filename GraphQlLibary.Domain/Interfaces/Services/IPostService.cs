@@ -22,5 +22,7 @@ namespace GraphQlLibary.Domain.Interfaces.Services
         bool IsExist(Expression<Func<Post, bool>> filter);
 
         Post GetByLikes(int likes);
+
+        bool AddLike(Like like);
     }
 }

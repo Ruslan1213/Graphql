@@ -20,6 +20,7 @@ import { DeletePostComponent } from './deletePost/deletePost.component';
 import { CreatePostComponent } from './createPost/createPost.component';
 import { NotFoundComponent } from './notFound/notFound.component';
 import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { LoginComponent } from './login/login.component';
     DeletePostComponent,
     CreatePostComponent,
     LoginComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +57,7 @@ import { LoginComponent } from './login/login.component';
       { path: 'post/delete', component: DeletePostComponent },
       { path: 'post/create', component: CreatePostComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'registration', component: RegistrationComponent },
     ])
   ],
   providers: [{

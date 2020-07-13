@@ -12,7 +12,7 @@ export class PostComponent {
   posts: any[];
   query: string;
   constructor(private apollo: Apollo) {
-    this.query = `{postItems{ id, description, likes, dateOfPost, photoUri, user { name } } }`
+    this.query = `{postItems{ id, description, likes { userId }, dateOfPost, photoUri, user { name } } }`
   }
 
   ngOnInit() {

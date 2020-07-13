@@ -4,6 +4,7 @@ using GraphQlLibary.Domain.Interfaces.UnitOfWork;
 using GraphQlLibary.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace GraphQlLibary.BLL.Services
@@ -61,6 +62,21 @@ namespace GraphQlLibary.BLL.Services
         public Post GetByLikes(int likes)
         {
             return _postRepository.GetByLikes(likes);
+        }
+
+        public bool AddLike(Like like)
+        {
+            var post = Get(like.PostId);
+
+            if (post.Likes.ToList().Any(x => x.PostId == like.PostId && x.UserId == like.UserId))
+            {
+                return false;
+            }
+
+            _postRepository.AddLike(like);
+            _unitOfWork.Commit();
+
+            return true;
         }
     }
 }

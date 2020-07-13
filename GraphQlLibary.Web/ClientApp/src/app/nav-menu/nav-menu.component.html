@@ -33,27 +33,37 @@
           </li>
 
           <li class="nav-item"
+              *ngIf="isAuthorize()"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/post']">Post</a>
           </li>
 
           <li class="nav-item"
+              *ngIf="isAuthorize()"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/role']">Role</a>
           </li>
 
           <li class="nav-item"
-              [routerLinkActive]="['link-active']"
-              [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/login']">Role</a>
+              *ngIf="isAuthorize()">
+
+            <button class="btn btn-primary" (click)="logout()">Logout</button>
           </li>
 
           <li class="nav-item"
+              *ngIf="!isAuthorize()"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/register']">Role</a>
+            <a class="nav-link text-dark" [routerLink]="['/login']">Login</a>
+          </li>
+
+          <li class="nav-item"
+              *ngIf="!isAuthorize()"
+              [routerLinkActive]="['link-active']"
+              [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-dark" [routerLink]="['/registration']">Registration</a>
           </li>
 
         </ul>

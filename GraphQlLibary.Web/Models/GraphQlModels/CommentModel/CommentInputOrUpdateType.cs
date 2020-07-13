@@ -7,7 +7,7 @@ namespace GraphQlLibary.Web.Models.GraphQlModels.CommentModel
     {
         public CommentInputOrUpdateType()
         {
-            Name = "UserInput";
+            Name = "CommentInput";
             Field<NonNullGraphType<IntGraphType>>("ParentCommentId");
             Field<NonNullGraphType<StringGraphType>>("Text");
             Field<NonNullGraphType<StringGraphType>>("CommentatorName");

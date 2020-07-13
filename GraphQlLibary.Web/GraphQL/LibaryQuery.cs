@@ -1,30 +1,34 @@
 ﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using GraphQL;
 using GraphQL.DataLoader;
 using GraphQL.Server.Authorization.AspNetCore;
 using GraphQL.Types;
 using GraphQL.Upload.AspNetCore;
 using GraphQlLibary.Domain.Interfaces.Services;
 using GraphQlLibary.Domain.Models;
+using GraphQlLibary.Web.Interfaces;
 using GraphQlLibary.Web.Models.GraphQlModels.CommentModel;
 using GraphQlLibary.Web.Models.GraphQlModels.PostModels;
 using GraphQlLibary.Web.Models.GraphQlModels.RoleModels;
 using GraphQlLibary.Web.Models.GraphQlModels.UserModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 
 namespace GraphQlLibary.Web.GraphQL
 {
     public class LibaryQuery : ObjectGraphType
     {
-        private readonly IRoleService _roleService;
-
         public LibaryQuery(
             IDataLoaderContextAccessor accessor,
             IRoleService authorService,
             ICommentService commentService,
             IPostService postService,
             IUserService userService,
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor,
+            ITokenService tokenService)
         {
             Field<ListGraphType<RoleType>, IEnumerable<Role>>()
                 .Name("RoleItems")
@@ -32,7 +36,12 @@ namespace GraphQlLibary.Web.GraphQL
                 {
                     var loader = accessor.Context.GetOrAddLoader("GetAllRoles", () => authorService.GetAllAcync());
 
-                    return loader.LoadAsync();
+                    if (tokenService.IsAdmin(token: GetToken(contextAccessor)))
+                    {
+                        return loader.LoadAsync();
+                    }
+
+                    throw new ExecutionError("401");
                 });
 
             Field<RoleType, Role>()
@@ -89,13 +98,21 @@ namespace GraphQlLibary.Web.GraphQL
 
                         return postService.Get(barcode);
                     }
-                    catch (System.FormatException e)
+                    catch
                     {
                         return null;
                     }
 
                 });
 
+            Field<BooleanGraphType, bool>()
+                .Name("IsAdmin")
+                .Resolve(ctx =>
+                {
+                    var isAdmin = tokenService.IsAdmin(GetToken(contextAccessor));
+
+                    return isAdmin;
+                });
 
             Field<ListGraphType<UserType>, IEnumerable<User>>()
                 .Name("UserItems")
@@ -112,6 +129,14 @@ namespace GraphQlLibary.Web.GraphQL
                     var barcode = ctx.GetArgument<int>("id");
                     return userService.Get(barcode);
                 });
+        }
+
+        private string GetToken(IHttpContextAccessor contextAccessor)
+        {
+            StringValues token;
+            contextAccessor.HttpContext.Request.Headers.TryGetValue("token", out token);
+
+            return token.ToString();
         }
     }
 }

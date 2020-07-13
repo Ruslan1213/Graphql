@@ -1,34 +1,38 @@
-﻿using GraphQL;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 using GraphQL.Upload.AspNetCore;
 using GraphQlLibary.Domain.Interfaces.Services;
 using GraphQlLibary.Domain.Models;
-using GraphQlLibary.Web.Auth;
-using GraphQlLibary.Web.Models.GraphQlModels.Auth;
+using GraphQlLibary.Web.Interfaces;
 using GraphQlLibary.Web.Models.GraphQlModels.CommentModel;
 using GraphQlLibary.Web.Models.GraphQlModels.PostModels;
 using GraphQlLibary.Web.Models.GraphQlModels.RoleModels;
 using GraphQlLibary.Web.Models.GraphQlModels.UserModels;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
 
 namespace GraphQlLibary.Web.GraphQL
 {
     public class LibaryMutation : ObjectGraphType
     {
-        private readonly IRoleService _roleService;
-
-        public LibaryMutation(IRoleService roleService, IUserService userService, IPostService postService, ICommentService commentService, IHttpContextAccessor contextAccessor)
+        public LibaryMutation(ITokenService tokenService, IRoleService roleService, IUserService userService, IPostService postService, ICommentService commentService, IHttpContextAccessor contextAccessor)
         {
-            #region Authorize
-            _roleService = roleService;
+            #region AddLike
+            Field<BooleanGraphType, bool>()
+               .Name("likePost")
+               .Argument<NonNullGraphType<IntGraphType>>("postId", "postId input")
+               .Argument<NonNullGraphType<IntGraphType>>("userId", "userId input")
+               .Resolve(context =>
+               {
+                   int userId = context.GetArgument<int>("userId");
+                   int postId = context.GetArgument<int>("userId");
 
-            Field<SessionType, Session>()
+                   return postService.AddLike(new Like { UserId = userId, PostId = postId }); ;
+               });
+            #endregion AddLike
+
+            #region Authorize
+
+            Field<StringGraphType, string>()
                 .Name("sessions")
                 .Argument<NonNullGraphType<StringGraphType>>("password", "password input")
                 .Argument<NonNullGraphType<StringGraphType>>("mail", "mail input")
@@ -40,19 +44,10 @@ namespace GraphQlLibary.Web.GraphQL
 
                     if (user == null)
                     {
-                        return new Session { IsLoggedIn = false };
+                        return null;
                     }
 
-                    var claims = GenerateClaims(user);
-                    var principal = CreatePrincipal(claims);
-
-                    contextAccessor.HttpContext.SignInAsync(principal, new AuthenticationProperties
-                    {
-                        ExpiresUtc = DateTime.UtcNow.AddMonths(6),
-                        IsPersistent = true
-                    });
-
-                    return new Session { IsLoggedIn = true };
+                    return tokenService.GenerateJwtToken(user);
                 });
             #endregion Authorize
 
@@ -98,6 +93,18 @@ namespace GraphQlLibary.Web.GraphQL
             #endregion RoleOperation
 
             #region UserOperation
+
+            Field<UserType, User>()
+                .Name("registration")
+                .Argument<NonNullGraphType<RegisterUserType>>("user", "user input")
+                .Resolve(ctx =>
+                {
+                    var item = ctx.GetArgument<User>("user");
+                    item.UserRole = new List<UserRole> { new UserRole { RoleId = 1 } };
+                    userService.Insert(item);
+
+                    return item;
+                });
 
             Field<UserType, User>()
                 .Name("createUser")
@@ -231,34 +238,5 @@ namespace GraphQlLibary.Web.GraphQL
 
             #endregion CommentOperation
         }
-
-        #region privateMethods
-        private ClaimsPrincipal CreatePrincipal(IEnumerable<Claim> claims)
-        {
-            var claimsIdentityList = new List<ClaimsIdentity> {
-                new ClaimsIdentity(claims),
-                new ClaimsIdentity("Cookie")
-            };
-
-            return new ClaimsPrincipal(claimsIdentityList);
-        }
-
-        private IEnumerable<Claim> GenerateClaims(User user)
-        {
-            //var a = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var claims = new List<Claim>
-                             {
-                                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                                 new Claim(ClaimTypes.Name, user.Name),
-                                 new Claim(ClaimTypes.Email, user.Email)
-                             };
-
-            var roles = user.UserRole.Select(x => _roleService.Get(x.RoleId)).ToList();
-
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
-
-            return claims;
-        }
-        #endregion privateMethods
     }
 }

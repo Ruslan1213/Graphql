@@ -14,9 +14,19 @@ namespace GraphQlLibary.DAL.Repositories
             _libaryContext = libaryContext;
         }
 
+        public void AddLike(Like like)
+        {
+            if (_libaryContext.Likes.Any(x => x.PostId == like.PostId && x.UserId == like.UserId))
+            {
+                return;
+            }
+
+            _libaryContext.Likes.Add(like);
+        }
+
         public Post GetByLikes(int likesCount)
         {
-            return _libaryContext.Posts.FirstOrDefault(x => x.Likes == likesCount);
+            return _libaryContext.Posts.FirstOrDefault(x => x.Likes.Count == likesCount);
         }
     }
 }

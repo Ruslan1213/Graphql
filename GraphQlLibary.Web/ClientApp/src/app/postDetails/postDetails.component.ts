@@ -26,7 +26,7 @@ export class PostDetails {
           post(id: "`+ params['id'] + `"){
             id,
             description,
-            likes,
+            likes { postId },
             dateOfPost,
             photoUri
             user{
@@ -62,4 +62,31 @@ export class PostDetails {
       );
   }
 
+  updateLikes(id) {
+
+    let str = `mutation {
+      likePost(postId: `+ id +`, userId: 1)
+    }`;
+
+    this.apollo
+      .mutate<any>({
+        mutation: gql(str)
+      })
+      .subscribe(
+        ({ data }) => {
+          console.log(data.likePost);
+
+          if (data.likePost.length == false) {
+            alert('your already like this post');
+          } else {
+            this.post.likes.length += 1;
+          }
+        },
+        error => {
+          this.error = error;
+        }
+    );
+
+   
+  }
 }

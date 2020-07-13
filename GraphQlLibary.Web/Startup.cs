@@ -18,6 +18,12 @@ using Microsoft.AspNetCore.Http;
 using GraphQL.Validation;
 using GraphQL.Server.Authorization.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using GraphQlLibary.Web.Auth;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace GraphQlLibary.Web
 {
@@ -50,13 +56,45 @@ namespace GraphQlLibary.Web
             .AddDataLoader();
 
             ConfigureDI(services);
+            services.AddCors();
+
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AuthSettings>(appSettingsSection);
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AuthSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddDistributedMemoryCache();
+
+            services.AddSession(opts =>
+            {
+                opts.IdleTimeout = TimeSpan.FromMinutes(5);
+            });
         }
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSession();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -66,7 +104,6 @@ namespace GraphQlLibary.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
 
             app.UseGraphiQLServer(null);
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
@@ -80,6 +117,10 @@ namespace GraphQlLibary.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             if (!env.IsDevelopment())
             {
@@ -102,6 +143,7 @@ namespace GraphQlLibary.Web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -15,5 +15,7 @@ namespace GraphQlLibary.Domain.Models
         public virtual ICollection<UserRole> UserRole { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
+
+        public virtual ICollection<Like> Likes { get; set; }
     }
 }

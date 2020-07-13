@@ -18,6 +18,8 @@ using GraphQlLibary.Web.Models.GraphQlModels.RoleModels;
 using GraphQlLibary.Web.Models.GraphQlModels.UserModels;
 using GraphQlLibary.Web.Models.GraphQlModels;
 using GraphQlLibary.Web.Models.GraphQlModels.Auth;
+using GraphQlLibary.Web.Auth;
+using GraphQlLibary.Web.Interfaces;
 
 namespace GraphQlLibary.Web.Infrastructure.DI
 {
@@ -43,6 +45,7 @@ namespace GraphQlLibary.Web.Infrastructure.DI
 
             builder.RegisterType<CommentService>().As<ICommentService>().InstancePerLifetimeScope();
             builder.RegisterType<PhotoService>().As<IPhotoService>().InstancePerLifetimeScope();
+            builder.RegisterType<TokenService>().As<ITokenService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<LibaryContext>().AsSelf().InstancePerLifetimeScope();
@@ -66,9 +69,9 @@ namespace GraphQlLibary.Web.Infrastructure.DI
             builder.RegisterType<CommentInputOrUpdateType>().AsSelf().SingleInstance();
             builder.RegisterType<PostInputOrUpdateType>().AsSelf().SingleInstance();
             builder.RegisterType<UserInputOrUpdateType>().AsSelf().SingleInstance();
+            builder.RegisterType<RegisterUserType>().AsSelf().SingleInstance();
 
             builder.RegisterType<PostType>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<SessionType>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PhotoType>().AsSelf().InstancePerLifetimeScope();
         }
     }

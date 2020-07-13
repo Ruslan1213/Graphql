@@ -7,7 +7,7 @@ namespace GraphQlLibary.Web.Models.GraphQlModels.PostModels
     {
         public PostInputOrUpdateType()
         {
-            Name = "UserInput";
+            Name = "PostInput";
             Field<NonNullGraphType<IntGraphType>>("Id");
             Field<NonNullGraphType<DateTimeGraphType>>("DateOfPost");
             Field<NonNullGraphType<StringGraphType>>("Description");

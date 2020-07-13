@@ -18,13 +18,10 @@
     <dd class="col-sm-10">
       {{post?.description}}
     </dd>
-    <dd id="heart" class="col-sm-10">
+    <dd (click)="updateLikes(post?.id)" id="heart" class="col-sm-10">
       <span class="heart"></span>
-      {{post?.likes}} Likes
+      {{post?.likes?.length}} Likes
     </dd>
   </dl>
-  <form class="invisible" asp-action="LikeIt" id="form">
-    <input name="id" value="{{post?.id}}" hidden="hidden" id="postId" />
-    <button type="submit" class="btn btn-primary">Like</button>
-  </form>
+  <button (click)="updateLikes(post?.id)">Click</button>
 </div>

@@ -1,6 +1,7 @@
 ﻿using GraphQL.Types;
 using GraphQlLibary.Domain.Models;
 using GraphQlLibary.Web.Models.GraphQlModels.CommentModel;
+using GraphQlLibary.Web.Models.GraphQlModels.Likes;
 using GraphQlLibary.Web.Models.GraphQlModels.UserModels;
 
 namespace GraphQlLibary.Web.Models.GraphQlModels.PostModels
@@ -11,13 +12,13 @@ namespace GraphQlLibary.Web.Models.GraphQlModels.PostModels
         {
             Field(x => x.Id);
             Field(x => x.DateOfPost);
-            Field(x => x.Likes);
             Field(x => x.UserId);
             Field(x => x.Description);
             Field(x => x.PhotoUri, nullable: true);
             Field<UserType, User>().Name("user").Resolve(x => x.Source.User);
             Field<ListGraphType<CommentType>>("comments", "Which comments they appear in."); ;
             Field<ListGraphType<PhotoType>>();
+            Field<ListGraphType<LikeType>>("likes", "Which like they appear in.");
         }
     }
 }

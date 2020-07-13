@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraphQlLibary.DAL.Migrations
 {
     [DbContext(typeof(LibaryContext))]
-    [Migration("20200707120532_Initial")]
+    [Migration("20200712162947_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,21 @@ namespace GraphQlLibary.DAL.Migrations
                     b.ToTable("Comment");
                 });
 
+            modelBuilder.Entity("GraphQlLibary.Domain.Models.Like", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("GraphQlLibary.Domain.Models.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -80,9 +95,6 @@ namespace GraphQlLibary.DAL.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("Likes")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("PhotoUri")
                         .HasColumnType("nvarchar(max)");
@@ -194,6 +206,21 @@ namespace GraphQlLibary.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GraphQlLibary.Domain.Models.Like", b =>
+                {
+                    b.HasOne("GraphQlLibary.Domain.Models.Post", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GraphQlLibary.Domain.Models.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("GraphQlLibary.Domain.Models.Photo", b =>
                 {
                     b.HasOne("GraphQlLibary.Domain.Models.Post", "Post")
@@ -208,7 +235,7 @@ namespace GraphQlLibary.DAL.Migrations
                     b.HasOne("GraphQlLibary.Domain.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
