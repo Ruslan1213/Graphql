@@ -22,7 +22,7 @@
   <ItemGroup>
     <PackageReference Include="GraphQL.Server.Authorization.AspNetCore" Version="3.4.0" />
     <PackageReference Include="GraphQL.Upload.AspNetCore" Version="0.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.5" />
 	  <PackageReference Include="Autofac" Version="5.2.0" />
 	  <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
